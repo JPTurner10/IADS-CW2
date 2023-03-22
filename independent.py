@@ -28,7 +28,7 @@ class Graph:
             self.degs = [0] * self.n
             reader = open(filename,'r')
             lines = reader.readlines()
-            for i in range(0, len(lines)):
+            for i in range(len(lines)):
                 lines[i] = lines[i].split()
             if weighted:
                 for i in (0, num):
@@ -122,7 +122,7 @@ class Graph:
     
     def arga(self, inIS):
         score=[-1] * self.n
-        for i in range(0, self.n):
+        for i in range(self.n):
             if inIS[i] == 0:
                 score[i] = (self.weights[i] / self.degs[i])
         return max(score)
@@ -131,6 +131,18 @@ class Graph:
         return 1
     
     def Nbd(self, u):
+        neighbours = []
+        for i in range(self.n):
+            temp = self.graph[i]
+            if i == u:
+                while temp.next:
+                    neighbours.append(temp.next.node)
+            else:
+                while temp.next:
+                    if temp.next.node == u:
+                        neighbours.append(i)
+                        break      
+        return neighbours
 
 
 def test():

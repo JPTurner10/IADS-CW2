@@ -107,8 +107,11 @@ class Graph:
             inIS[u] = 1
             neighbours = self.Nbd(u)
             for v in neighbours:
+                print('neighbours', neighbours)
                 inIS[v] = -1
                 self.del_edge(u, v)
+                count -= 1
+        print('out')
         return inIS
 
     # It is your responsibility to complete this method as your
@@ -125,32 +128,27 @@ class Graph:
         for i in range(self.n):
             if inIS[i] == 0:
                 score[i] = (self.weights[i] / self.degs[i])
-        return max(score)
+        return int(max(score))
     
     def argb():
         return 1
     
     def Nbd(self, u):
         neighbours = []
-        for i in range(self.n):
-            temp = self.graph[i]
-            if i == u:
-                while temp.next:
-                    neighbours.append(temp.next.node)
-            else:
-                while temp.next:
-                    if temp.next.node == u:
-                        neighbours.append(i)
-                        break      
+        temp = self.graph[u]
+        while temp != None:
+            neighbours.append(temp.node)
+            temp = temp.next
+        print('neighbours', neighbours)
         return neighbours
 
 
-def test():
-    gU = Graph(7, "graph1U", False)
-    print(gU.degs)
-    gU.print_out_graph()
-    gW = Graph(7, "graph1U", False)
-    gW.print_out_graph()
+gU = Graph(7, "graph1U", False)
+IS = gU.GreedyIS()
+print(IS)
+gW = Graph(7, "graph1U", False)
+IS = gW.GreedyIS()
+print(IS)
 
 
 

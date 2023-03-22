@@ -106,12 +106,13 @@ class Graph:
             u = self.arga(inIS)
             inIS[u] = 1
             neighbours = self.Nbd(u)
+            self.delete_neighbours_edges(neighbours)
             for v in neighbours:
-                print('neighbours', neighbours)
                 inIS[v] = -1
-                self.del_edge(u, v)
-                count -= 1
-        print('out')
+                count -= 1 #removes neighbour
+            count -= 1 #removes current node
+        for i in range(self.n):
+            inIS[i] = max(0, inIS[i])
         return inIS
 
     # It is your responsibility to complete this method as your
@@ -124,11 +125,18 @@ class Graph:
         return inIS
     
     def arga(self, inIS):
-        score=[-1] * self.n
+        max_value = -1
+        max_index = -1
         for i in range(self.n):
             if inIS[i] == 0:
-                score[i] = (self.weights[i] / self.degs[i])
-        return int(max(score))
+                if self.degs[i] != 0:
+                    temp = (self.weights[i] / self.degs[i])
+                    if temp > max_value:
+                        max_value = temp
+                        max_index = i
+                else:
+                    max_index = 1
+        return max_index
     
     def argb():
         return 1
@@ -139,14 +147,22 @@ class Graph:
         while temp != None:
             neighbours.append(temp.node)
             temp = temp.next
-        print('neighbours', neighbours)
         return neighbours
+    
+    def delete_neighbours_edges(self, neighbours):
+        for neighbour in neighbours:
+            temp = self.graph[neighbour]
+            check = True
+            while temp != None:
+                self.del_edge(neighbour, temp.node)
+                temp = temp.next
+
 
 
 gU = Graph(7, "graph1U", False)
 IS = gU.GreedyIS()
 print(IS)
-gW = Graph(7, "graph1U", False)
+gW = Graph(7, "graph1W", False)
 IS = gW.GreedyIS()
 print(IS)
 

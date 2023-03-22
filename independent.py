@@ -23,10 +23,21 @@ class Graph:
     def __init__(self,num,filename,weighted):
         if num > 0:
             self.n = num
-            self.weights = [None] * self.n
+            self.weights = [1] * self.n
             self.graph = [None] * self.n
             self.degs = [0] * self.n
             reader = open(filename,'r')
+            lines = reader.readlines()
+            for i in range(0, len(lines)):
+                lines[i] = lines[i].split()
+            if weighted:
+                for i in (0, num):
+                    self.weights[i] = int(lines[i][1])
+                for i in (num+1, len(lines)):
+                    self.add_edge(int(lines[i][0]), int(lines[i][1]))
+            else:
+                for line in lines:
+                    self.add_edge(int(line[0]), int(line[1]))
 
             
     # DO NOT EDIT
@@ -100,6 +111,14 @@ class Graph:
         deg = (self.degs).copy()
         fresh = copy.deepcopy(self.graph)
         return inIS
+    
+
+def test():
+    gU = Graph(7, "graph1U", False)
+    print(gU.degs)
+    gU.print_out_graph()
+    gW = Graph(7, "graph1U", False)
+    gW.print_out_graph()
 
 
 

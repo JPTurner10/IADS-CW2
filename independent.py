@@ -101,6 +101,14 @@ class Graph:
         inIS = [0] * self.n
         deg = (self.degs).copy()
         fresh = copy.deepcopy(self.graph)
+        count = self.n
+        while count > 0:
+            u = self.arga(inIS)
+            inIS[u] = 1
+            neighbours = self.Nbd(u)
+            for v in neighbours:
+                inIS[v] = -1
+                self.del_edge(u, v)
         return inIS
 
     # It is your responsibility to complete this method as your
@@ -112,6 +120,18 @@ class Graph:
         fresh = copy.deepcopy(self.graph)
         return inIS
     
+    def arga(self, inIS):
+        score=[-1] * self.n
+        for i in range(0, self.n):
+            if inIS[i] == 0:
+                score[i] = (self.weights[i] / self.degs[i])
+        return max(score)
+    
+    def argb():
+        return 1
+    
+    def Nbd(self, u):
+
 
 def test():
     gU = Graph(7, "graph1U", False)

@@ -1,8 +1,51 @@
-trace
+Pseudo for A(iv)
 
-neighbours []
+n = |V|
+m = |E|
+Adj
+IS = [0] * n
+deg = [0] * n
+for u = 0 to (n-1) do:
+    deg[u] = len(Adj[u])
+while (some vertices remain in graph) do:
+    u = argmin {deg[v]; IS[v] == 0}
+    IS[u] = 1
+    for (w in Nbd(u)) do:
+        IS[w] = -1
+        del_edge(w)
+for u = 0 to (n-1)
+    IS[u] = max{0, IS[u]}
+return IS
 
 
-4 -> 1 -> 2 -> 0
+Assuming the graph is represented as an adjancency list, justify O(n^2+m)
+running time where n=|V|, m=|E|
 
-4 1
+always loop to initialise deg[u] -> O(n)
+
+worst case we look at every Vertex, in order for this, no edges can exist.
+Check and compare all vertices to find largest
+this would run at O(n^2) since it would not enter Nbd for loop, not quite what we need
+
+
+
+On other side all vertices connected to each other mean that after one execution,
+the program will finish. This would be best case scenario
+
+
+
+
+del_edge(w):
+    current = Adj[w]
+    while next exists:
+        if IS[next] == 0:
+            deg[next] -= 1
+            current2 = Adj[next]
+            while next2 exists:
+                if next2 == w:
+                    next2 = nextnext2
+                else:
+                    current2 = next2
+        next = nextnext
+        
+

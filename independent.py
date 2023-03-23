@@ -31,9 +31,9 @@ class Graph:
             for i in range(len(lines)):
                 lines[i] = lines[i].split()
             if weighted:
-                for i in (0, num):
+                for i in range(0, num):
                     self.weights[i] = int(lines[i][1])
-                for i in (num+1, len(lines)):
+                for i in range(num+1, len(lines)):
                     self.add_edge(int(lines[i][0]), int(lines[i][1]))
             else:
                 for line in lines:
@@ -102,15 +102,13 @@ class Graph:
         deg = (self.degs).copy()
         fresh = copy.deepcopy(self.graph)
         count = self.n
-        while count > 0:
+        while 0 in inIS:
             u = self.arga(inIS)
             inIS[u] = 1
-            neighbours = self.Nbd(u)
-            self.delete_neighbours_edges(neighbours)
-            for v in neighbours:
-                inIS[v] = -1
-                count -= 1 #removes neighbour
-            count -= 1 #removes current node
+            neighbours = self.Nbd(u, fresh)
+            for w in neighbours:
+                inIS[w] = -1
+                fresh = self.del_edge_new(w, inIS, fresh)
         for i in range(self.n):
             inIS[i] = max(0, inIS[i])
         return inIS
@@ -135,34 +133,43 @@ class Graph:
                         max_value = temp
                         max_index = i
                 else:
-                    max_index = 1
+                    max_value = math.inf
+                    max_index =  i
         return max_index
     
     def argb():
         return 1
     
-    def Nbd(self, u):
+    def Nbd(self, u, fresh):
         neighbours = []
-        temp = self.graph[u]
+        temp = fresh[u]
         while temp != None:
             neighbours.append(temp.node)
             temp = temp.next
         return neighbours
-    
-    def delete_neighbours_edges(self, neighbours):
-        for neighbour in neighbours:
-            temp = self.graph[neighbour]
-            check = True
-            while temp != None:
-                self.del_edge(neighbour, temp.node)
-                temp = temp.next
+
+    def del_edge_new(self, w, inIS, fresh):
+        current = fresh[w]
+        while current.next != None:
+            if inIS[current.node] == 0:
+                self.degs[current.node]
+                current2 = fresh[current.node]
+                while current2.next != None:
+                    if current2.node == w:
+                        current2.node = current2.next.node
+                        current2.next = current2.next.next
+                    else:
+                        current2 = current2.next
+            current.next = current.next.next
+        return fresh
+
 
 
 
 gU = Graph(7, "graph1U", False)
 IS = gU.GreedyIS()
 print(IS)
-gW = Graph(7, "graph1W", False)
+gW = Graph(7, "graph1W", True)
 IS = gW.GreedyIS()
 print(IS)
 

@@ -47,5 +47,30 @@ del_edge(w):
                 else:
                     current2 = next2
         next = nextnext
+
+
+(v)
         
+
+Each w has n connections
+
+Each u has 3 connections
+
+Each v has 4 connections to ws, and 1 to a singular u
+
+u_1 will be selected first, this will then eliminate v_1, v_1+(n/3), and v_1+2(n/3)
+hence lowering the degree of all w by 3
+
+u wil continue to be selected till all have been done so.
+
+This process will elimate all v. 
+
+w will not be selected until all u have since down to the last v they will always have at least 4 connections
+
+once all u have been selected, the ws will be selected since they will now have no connections
+
+Thus leaving us with an IS of size n/3 + 4
+
+
+The maximum set will be R since it is of size n and is completely disjoint
 

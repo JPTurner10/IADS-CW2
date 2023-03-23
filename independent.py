@@ -120,6 +120,16 @@ class Graph:
         inIS = [0] * self.n
         deg = (self.degs).copy()
         fresh = copy.deepcopy(self.graph)
+        count = self.n
+        while 0 in inIS:
+            u = self.argb(inIS)
+            inIS[u] = 1
+            neighbours = self.Nbd(u, fresh)
+            for w in neighbours:
+                inIS[w] = -1
+                fresh = self.del_edge_new(w, inIS, fresh)
+        for i in range(self.n):
+            inIS[i] = max(0, inIS[i])
         return inIS
     
     def arga(self, inIS):
@@ -137,8 +147,15 @@ class Graph:
                     max_index =  i
         return max_index
     
-    def argb():
-        return 1
+    def argb(self, inIS):
+        max_value = -1
+        max_index = -1
+        for i in range(self.n):
+            if inIS[i] == 0:
+                if self.weights[i] > max_value:
+                    max_value = self.weights[i]
+                    max_index = i
+        return max_index
     
     def Nbd(self, u, fresh):
         neighbours = []
@@ -172,6 +189,11 @@ print(IS)
 gW = Graph(7, "graph1W", True)
 IS = gW.GreedyIS()
 print(IS)
-
+gU = Graph(7, "graph1U", False)
+IS = gU.GreedyIS_b()
+print(IS)
+gW = Graph(7, "graph1W", True)
+IS = gW.GreedyIS_b()
+print(IS)
 
 

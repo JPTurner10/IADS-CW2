@@ -101,14 +101,16 @@ class Graph:
         inIS = [0] * self.n
         deg = (self.degs).copy()
         fresh = copy.deepcopy(self.graph)
-        count = self.n
         while 0 in inIS:
-            u = self.arga(inIS)
+            u = self.arga(inIS, deg)
             inIS[u] = 1
             neighbours = self.Nbd(u, fresh)
             for w in neighbours:
                 inIS[w] = -1
-                fresh = self.del_edge_new(w, inIS, fresh)
+                self.del_edge_new(w, inIS, fresh, deg)
+            self.graph = fresh
+            self.print_out_graph()
+            print('-----------------')
         for i in range(self.n):
             inIS[i] = max(0, inIS[i])
         return inIS
@@ -120,30 +122,31 @@ class Graph:
         inIS = [0] * self.n
         deg = (self.degs).copy()
         fresh = copy.deepcopy(self.graph)
-        count = self.n
         while 0 in inIS:
             u = self.argb(inIS)
             inIS[u] = 1
             neighbours = self.Nbd(u, fresh)
             for w in neighbours:
                 inIS[w] = -1
-                fresh = self.del_edge_new(w, inIS, fresh)
+                self.del_edge_new(w, inIS, fresh, deg)
+            self.print_out_graph()
+            print('-----------------')
         for i in range(self.n):
             inIS[i] = max(0, inIS[i])
         return inIS
     
-    def arga(self, inIS):
+    def arga(self, inIS, deg):
         max_value = -1
         max_index = -1
         for i in range(self.n):
             if inIS[i] == 0:
-                if self.degs[i] != 0:
-                    temp = (self.weights[i] / self.degs[i])
+                if deg[i] != 0:
+                    temp = (self.weights[i] / deg[i])
                     if temp > max_value:
                         max_value = temp
                         max_index = i
                 else:
-                    max_value = math.inf
+                    max_value = 9999999999999999
                     max_index =  i
         return max_index
     
@@ -165,35 +168,34 @@ class Graph:
             temp = temp.next
         return neighbours
 
-    def del_edge_new(self, w, inIS, fresh):
+    def del_edge_new(self, w, inIS, fresh, deg):
         current = fresh[w]
         while current.next != None:
             if inIS[current.node] == 0:
-                self.degs[current.node]
-                current2 = fresh[current.node]
+                deg[current.node] -= 1
+                current2 = fresh[current.node] #check process done, if not change outside while
                 while current2.next != None:
                     if current2.node == w:
                         current2.node = current2.next.node
                         current2.next = current2.next.next
                     else:
                         current2 = current2.next
-            current.next = current.next.next
-        return fresh
+            current = current.next
 
 
 
 
-gU = Graph(7, "graph1U", False)
-IS = gU.GreedyIS()
-print(IS)
-gW = Graph(7, "graph1W", True)
+#gU = Graph(8, "graph1U", False)
+#IS = gU.GreedyIS()
+#print(IS)
+gW = Graph(8, "graph1W", True)
 IS = gW.GreedyIS()
 print(IS)
-gU = Graph(7, "graph1U", False)
-IS = gU.GreedyIS_b()
-print(IS)
-gW = Graph(7, "graph1W", True)
-IS = gW.GreedyIS_b()
-print(IS)
+#gU = Graph(8, "graph1U", False)
+#IS = gU.GreedyIS_b()
+#print(IS)
+#gW = Graph(8, "graph1W", True)
+#IS = gW.GreedyIS_b()
+#print(IS)
 
 
